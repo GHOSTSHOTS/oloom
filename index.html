@@ -2,8 +2,8 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>سیستم لاگین امن + فرهنگ و هنر</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>سیستم لاگین امن + چرخه نیتروژن</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:Tahoma,sans-serif; -webkit-tap-highlight-color:transparent; }
   body { min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
@@ -87,6 +87,52 @@
                 padding:3px 10px; border-radius:20px; font-size:11px; margin-bottom:10px; }
   .loading { text-align:center; color:#2a5298; font-size:13px; padding:20px; }
 
+  /* ==================== چرخه نیتروژن ==================== */
+  .cycle-wrapper { display:flex; flex-direction:column; width:100%; gap:15px; }
+  .cycle-wrapper .subtitle {
+    color:#64748b; margin-bottom:8px; font-size:0.9rem; text-align:center;
+  }
+  .canvas-container {
+    position: relative; width: 100%; aspect-ratio: 16 / 10;
+    border-radius: 15px; overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 3px solid #334155; background: #1e293b;
+  }
+  #scene { display: block; width: 100%; height: 100%; cursor: pointer; }
+  .cycle-ui-panel {
+    background: #0f172a; border: 2px solid #4ade80;
+    border-radius: 12px; padding: 15px; min-height: 120px;
+    color: #fff;
+  }
+  .cycle-ui-panel h2 { margin: 0 0 8px 0; font-size: 1.05rem; color: #4ade80; text-align:right; }
+  .cycle-ui-panel p {
+    margin: 0; font-size: 0.9rem; line-height: 1.9;
+    color: #cbd5e1; text-align: justify;
+  }
+  .cycle-controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .cycle-controls button {
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+    padding: 11px 22px; font-size: 0.95rem; font-weight: bold;
+    cursor: pointer; border: none; border-radius: 10px;
+    background-color: #4ade80; color: #0f172a;
+    transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(74, 222, 128, 0.4);
+    flex: 1; min-width: 130px; max-width: 200px;
+  }
+  .cycle-controls button:hover { background-color: #22c55e; transform: translateY(-2px); }
+  .cycle-controls button:disabled { background-color: #64748b; box-shadow: none; cursor: not-allowed; transform: none; }
+  .cycle-legend {
+    display: flex; gap: 15px; justify-content: center;
+    font-size: 0.8rem; color: #64748b; margin-top: 5px;
+  }
+  .cycle-legend .legend-item { display: flex; align-items: center; gap: 5px; }
+  .cycle-legend .dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  @media (max-width: 480px) {
+    .header h2 { font-size: 16px; }
+    .cycle-ui-panel p { font-size: 0.82rem; line-height: 1.7; }
+  }
+
   /* ==================== فوتر سازنده ==================== */
   .creator-footer {
     position: fixed;
@@ -136,490 +182,6 @@
   }
   .devtools-warning.show { display: flex; flex-direction: column; }
   .devtools-warning h2 { color: #e74c3c; margin-bottom: 20px; font-size: 24px; }
-
-  /* ==================== استایل فرهنگ و هنر ==================== */
-  .culture-page-container {
-    width: min(92vw, 900px);
-    max-width: 100%;
-    margin: 0 auto;
-  }
-
-  .culture-card {
-    background: rgba(255, 255, 255, 0.09);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-radius: 2.8rem 1.2rem 2.8rem 1.2rem;
-    box-shadow:
-      0 25px 60px -20px rgba(0, 0, 0, 0.6),
-      0 0 0 1px rgba(255, 220, 200, 0.25) inset,
-      0 0 0 2px rgba(255, 180, 220, 0.12) inset,
-      0 0 80px rgba(255, 180, 220, 0.15);
-    padding: clamp(1.6rem, 4vw, 2.8rem) clamp(1.2rem, 3vw, 2rem) clamp(1.2rem, 3vw, 2rem);
-    position: relative;
-    border: 1px solid rgba(255, 220, 200, 0.28);
-    animation: cardPulse 6s ease-in-out infinite;
-    color: #f5e8d8;
-  }
-
-  @keyframes cardPulse {
-    0%, 100% {
-      box-shadow:
-        0 25px 60px -20px rgba(0, 0, 0, 0.6),
-        0 0 0 1px rgba(255, 220, 200, 0.25) inset,
-        0 0 0 2px rgba(255, 180, 220, 0.12) inset,
-        0 0 80px rgba(255, 180, 220, 0.15);
-    }
-    50% {
-      box-shadow:
-        0 25px 70px -18px rgba(0, 0, 0, 0.7),
-        0 0 0 1px rgba(255, 230, 210, 0.35) inset,
-        0 0 0 2px rgba(255, 200, 230, 0.2) inset,
-        0 0 100px rgba(255, 200, 230, 0.25);
-    }
-  }
-
-  .culture-card::before {
-    content: '✦ ✦ ✦';
-    position: absolute;
-    top: clamp(-1.1rem, -2vw, -0.7rem);
-    right: clamp(1rem, 4vw, 2.5rem);
-    background: linear-gradient(135deg, rgba(255, 200, 220, 0.9), rgba(200, 180, 255, 0.9));
-    color: #2d1b4e;
-    font-size: clamp(0.55rem, 1.2vw, 0.8rem);
-    letter-spacing: clamp(2px, 0.8vw, 6px);
-    padding: 0.2rem 0.9rem 0.15rem 0.6rem;
-    border-radius: 40px;
-    box-shadow: 0 6px 16px rgba(255, 180, 220, 0.5), 0 0 20px rgba(255, 200, 230, 0.6);
-    direction: ltr;
-    white-space: nowrap;
-    animation: badgeGlow 3s ease-in-out infinite;
-  }
-
-  @keyframes badgeGlow {
-    0%, 100% { filter: brightness(1); }
-    50% { filter: brightness(1.25); }
-  }
-
-  .culture-card::after {
-    content: '◈';
-    position: absolute;
-    bottom: clamp(-1.2rem, -2.5vw, -0.8rem);
-    left: clamp(1rem, 4vw, 2.5rem);
-    font-size: clamp(1.3rem, 3.5vw, 2rem);
-    color: rgba(255, 200, 220, 0.7);
-    transform: rotate(15deg);
-    text-shadow: 0 0 20px rgba(255, 180, 220, 0.8);
-    line-height: 1;
-    animation: rotateDiamond 6s ease-in-out infinite;
-  }
-
-  @keyframes rotateDiamond {
-    0%, 100% { transform: rotate(15deg) scale(1); }
-    50% { transform: rotate(75deg) scale(1.15); }
-  }
-
-  .culture-title {
-    font-size: clamp(1.4rem, 4.5vw, 2.5rem);
-    font-weight: 700;
-    color: #fff8f0;
-    margin-bottom: clamp(1.2rem, 3.2vw, 2rem);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    letter-spacing: -0.5px;
-    text-shadow: 0 0 20px rgba(255, 200, 220, 0.6), 0 2px 4px rgba(0, 0, 0, 0.4);
-    border-bottom: 2px dashed rgba(255, 200, 220, 0.4);
-    padding-bottom: clamp(0.9rem, 2.3vw, 1.4rem);
-    line-height: 1.35;
-    text-align: center;
-  }
-
-  .culture-title span {
-    background: linear-gradient(135deg, #ffb8d8, #d4a8ff, #ffd4a8);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    font-size: clamp(1.8rem, 5.5vw, 3.2rem);
-    line-height: 1;
-    animation: gradientText 4s ease infinite;
-    filter: drop-shadow(0 0 20px rgba(255, 180, 220, 0.7));
-  }
-
-  @keyframes gradientText {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-
-  .culture-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: clamp(0.9rem, 2.3vw, 1.4rem);
-  }
-
-  @media (min-width: 560px) {
-    .culture-grid { grid-template-columns: 1fr 1fr; }
-  }
-
-  .culture-concept {
-    background: rgba(255, 255, 255, 0.07);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 1.9rem 0.6rem 1.9rem 0.6rem;
-    padding: clamp(0.9rem, 2.3vw, 1.4rem);
-    box-shadow:
-      0 10px 25px -12px rgba(0, 0, 0, 0.5),
-      0 0 0 1px rgba(255, 220, 200, 0.2) inset,
-      0 0 30px rgba(255, 180, 220, 0.08);
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    position: relative;
-    border: 1px solid rgba(255, 220, 200, 0.2);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  .culture-concept::before {
-    content: '';
-    position: absolute;
-    top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    background: conic-gradient(
-      from 0deg,
-      transparent 0deg,
-      rgba(255, 180, 220, 0.15) 60deg,
-      transparent 120deg,
-      rgba(180, 200, 255, 0.12) 200deg,
-      transparent 260deg,
-      rgba(255, 220, 180, 0.15) 320deg,
-      transparent 360deg
-    );
-    animation: rotateGlow 8s linear infinite;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .culture-concept > * { position: relative; z-index: 1; }
-
-  @keyframes rotateGlow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .culture-concept:hover {
-      transform: translateY(-6px) scale(1.02);
-      background: rgba(255, 255, 255, 0.13);
-      box-shadow:
-        0 20px 40px -14px rgba(0, 0, 0, 0.6),
-        0 0 0 1px rgba(255, 230, 210, 0.4) inset,
-        0 0 50px rgba(255, 200, 230, 0.3);
-    }
-    .culture-concept:hover .culture-icon {
-      transform: scale(1.2) rotate(-8deg);
-      filter: drop-shadow(0 0 20px rgba(255, 200, 230, 0.9));
-    }
-  }
-
-  .culture-icon {
-    font-size: clamp(1.6rem, 4.2vw, 2.8rem);
-    display: inline-block;
-    margin-bottom: 0.5rem;
-    filter: drop-shadow(0 0 15px rgba(255, 200, 220, 0.6));
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    line-height: 1;
-    align-self: flex-start;
-    animation: iconFloat 3s ease-in-out infinite;
-  }
-
-  @keyframes iconFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-  }
-
-  .culture-concept h2 {
-    font-size: clamp(1.2rem, 3.2vw, 1.9rem);
-    font-weight: 700;
-    color: #fff8f0;
-    margin-bottom: clamp(0.6rem, 1.6vw, 0.9rem);
-    display: flex;
-    align-items: baseline;
-    gap: 0.4rem;
-    border-right: 5px solid;
-    border-image: linear-gradient(180deg, #ffb8d8, #d4a8ff) 1;
-    padding-right: 0.8rem;
-    line-height: 1.3;
-    flex-wrap: wrap;
-    text-shadow: 0 0 15px rgba(255, 200, 220, 0.5);
-  }
-
-  .culture-concept h2 small {
-    font-size: clamp(0.72rem, 1.6vw, 1rem);
-    font-weight: 400;
-    color: rgba(255, 220, 240, 0.75);
-  }
-
-  .culture-highlight {
-    background: linear-gradient(135deg, rgba(255, 180, 220, 0.12), rgba(180, 200, 255, 0.1));
-    border-radius: 1rem 0.3rem 1rem 0.3rem;
-    padding: clamp(0.9rem, 2.3vw, 1.4rem);
-    margin: 0.9rem 0;
-    border-right: 5px solid #ffb8d8;
-    box-shadow: 0 4px 20px rgba(255, 180, 220, 0.15), 0 0 0 1px rgba(255, 200, 230, 0.15) inset;
-    flex-grow: 1;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .culture-highlight::before {
-    content: '';
-    position: absolute;
-    top: 0; right: 0;
-    width: 60%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 220, 240, 0.08));
-    animation: shimmer 4s ease-in-out infinite;
-  }
-
-  @keyframes shimmer {
-    0%, 100% { transform: translateX(0); opacity: 0.4; }
-    50% { transform: translateX(-30%); opacity: 1; }
-  }
-
-  .culture-highlight p {
-    font-size: clamp(0.88rem, 1.9vw, 1.12rem);
-    color: #fff0e8;
-    font-weight: 500;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    line-height: 1.75;
-    gap: 0.25rem;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    position: relative;
-    z-index: 1;
-  }
-
-  .culture-highlight p strong {
-    color: #2d1b4e;
-    font-weight: 700;
-    background: linear-gradient(135deg, #ffd4e8, #e0c4ff);
-    padding: 0.15rem 0.7rem;
-    border-radius: 30px;
-    font-size: clamp(0.7rem, 1.4vw, 0.92rem);
-    white-space: nowrap;
-    line-height: 1.8;
-    box-shadow: 0 0 15px rgba(255, 200, 230, 0.5);
-  }
-
-  .culture-features {
-    list-style: none;
-    margin-top: 0.9rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-  }
-
-  .culture-features li {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.6rem;
-    font-size: clamp(0.88rem, 1.9vw, 1.12rem);
-    color: #f0e0d0;
-    background: rgba(255, 255, 255, 0.06);
-    padding: 0.9rem 1.2rem 0.9rem 0.9rem;
-    border-radius: 0 1.9rem 1.9rem 0;
-    border-left: 3px solid;
-    border-image: linear-gradient(180deg, #d4a8ff, #ffb8d8) 1;
-    transition: all 0.3s;
-    line-height: 1.7;
-    position: relative;
-    overflow: hidden;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .culture-features li:hover {
-      background: rgba(255, 255, 255, 0.12);
-      padding-right: 1.6rem;
-      transform: translateX(-4px);
-    }
-  }
-
-  .culture-features li::before {
-    content: '🌿';
-    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
-    filter: drop-shadow(0 0 8px rgba(180, 255, 200, 0.7));
-    flex-shrink: 0;
-    margin-top: 0.15rem;
-    line-height: 1;
-  }
-
-  .culture-concept.art .culture-features li::before {
-    content: '🎨';
-    filter: drop-shadow(0 0 8px rgba(255, 180, 220, 0.8));
-  }
-
-  .culture-concept.art .culture-highlight {
-    border-right-color: #d4a8ff;
-    background: linear-gradient(135deg, rgba(180, 200, 255, 0.12), rgba(255, 180, 220, 0.1));
-  }
-
-  .culture-quote {
-    margin-top: clamp(1.2rem, 3.2vw, 2rem);
-    text-align: center;
-    padding: clamp(0.9rem, 2.3vw, 1.4rem) 0 0.5rem;
-    border-top: 2px dashed rgba(255, 200, 220, 0.4);
-    color: #ffe8d8;
-    font-size: clamp(0.85rem, 1.8vw, 1.12rem);
-    font-weight: 400;
-    font-style: italic;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.4rem;
-    flex-wrap: wrap;
-    line-height: 1.7;
-    text-shadow: 0 0 15px rgba(255, 200, 220, 0.5);
-  }
-
-  .culture-quote span {
-    font-size: clamp(1rem, 2.5vw, 1.6rem);
-    color: #ffb8d8;
-    line-height: 1;
-    filter: drop-shadow(0 0 12px rgba(255, 180, 220, 0.9));
-    animation: quoteGlow 2.5s ease-in-out infinite;
-  }
-
-  @keyframes quoteGlow {
-    0%, 100% { filter: drop-shadow(0 0 12px rgba(255, 180, 220, 0.9)); }
-    50% { filter: drop-shadow(0 0 20px rgba(255, 200, 240, 1)); }
-  }
-
-  /* پس‌زمینه جادویی */
-  .culture-bg-effects {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-  }
-
-  .culture-bg-effects::before {
-    content: '';
-    position: absolute;
-    inset: -50%;
-    background-image:
-      radial-gradient(2px 2px at 20px 30px, rgba(255, 240, 200, 0.9), transparent),
-      radial-gradient(1.5px 1.5px at 40px 70px, rgba(255, 220, 180, 0.8), transparent),
-      radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.9), transparent),
-      radial-gradient(2px 2px at 90px 120px, rgba(255, 200, 220, 0.85), transparent),
-      radial-gradient(1.5px 1.5px at 160px 40px, rgba(200, 220, 255, 0.9), transparent),
-      radial-gradient(1px 1px at 200px 150px, rgba(255, 255, 255, 0.7), transparent),
-      radial-gradient(2px 2px at 250px 90px, rgba(255, 220, 180, 0.85), transparent),
-      radial-gradient(1px 1px at 300px 180px, rgba(255, 240, 200, 0.9), transparent);
-    background-size: 350px 220px;
-    animation: twinkle 4s ease-in-out infinite alternate;
-    opacity: 0.8;
-  }
-
-  @keyframes twinkle {
-    0% { opacity: 0.5; transform: scale(1); }
-    100% { opacity: 1; transform: scale(1.05); }
-  }
-
-  .culture-glow-orbs {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-  }
-
-  .culture-orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(clamp(50px, 7vw, 90px));
-    opacity: 0.5;
-    animation: orbFloat 20s ease-in-out infinite;
-    width: clamp(200px, 45vw, 500px);
-    height: clamp(200px, 45vw, 500px);
-  }
-
-  .culture-orb:nth-child(1) {
-    background: radial-gradient(circle, rgba(255, 140, 200, 0.6), transparent 70%);
-    top: -10%; right: -10%;
-    animation-delay: 0s;
-  }
-  .culture-orb:nth-child(2) {
-    background: radial-gradient(circle, rgba(140, 180, 255, 0.5), transparent 70%);
-    bottom: -15%; left: -15%;
-    animation-delay: 5s;
-  }
-  .culture-orb:nth-child(3) {
-    background: radial-gradient(circle, rgba(255, 200, 140, 0.5), transparent 70%);
-    top: 40%; left: 30%;
-    animation-delay: 10s;
-  }
-
-  @keyframes orbFloat {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(40px, -40px) scale(1.15); }
-    66% { transform: translate(-30px, 30px) scale(0.9); }
-  }
-
-  .culture-particles {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    overflow: hidden;
-  }
-
-  .culture-particle {
-    position: absolute;
-    top: -10%;
-    width: clamp(3px, 0.7vw, 8px);
-    height: clamp(3px, 0.7vw, 8px);
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 240, 200, 0.9), rgba(255, 200, 220, 0.3) 60%, transparent);
-    box-shadow: 0 0 12px rgba(255, 220, 180, 0.7), 0 0 24px rgba(255, 180, 220, 0.4);
-    animation: fall linear infinite;
-    opacity: 0;
-  }
-
-  .culture-particle:nth-child(1)  { left: 5%;  animation-duration: 12s; animation-delay: 0s; }
-  .culture-particle:nth-child(2)  { left: 15%; animation-duration: 15s; animation-delay: 2s; }
-  .culture-particle:nth-child(3)  { left: 25%; animation-duration: 10s; animation-delay: 4s; }
-  .culture-particle:nth-child(4)  { left: 35%; animation-duration: 14s; animation-delay: 1s; }
-  .culture-particle:nth-child(5)  { left: 45%; animation-duration: 13s; animation-delay: 3s; }
-  .culture-particle:nth-child(6)  { left: 55%; animation-duration: 16s; animation-delay: 5s; }
-  .culture-particle:nth-child(7)  { left: 65%; animation-duration: 11s; animation-delay: 2.5s; }
-  .culture-particle:nth-child(8)  { left: 75%; animation-duration: 17s; animation-delay: 6s; }
-  .culture-particle:nth-child(9)  { left: 85%; animation-duration: 12s; animation-delay: 1.5s; }
-  .culture-particle:nth-child(10) { left: 92%; animation-duration: 14s; animation-delay: 4.5s; }
-  .culture-particle:nth-child(11) { left: 10%; animation-duration: 18s; animation-delay: 7s; }
-  .culture-particle:nth-child(12) { left: 30%; animation-duration: 11s; animation-delay: 8s; }
-  .culture-particle:nth-child(13) { left: 50%; animation-duration: 15s; animation-delay: 5.5s; }
-  .culture-particle:nth-child(14) { left: 70%; animation-duration: 13s; animation-delay: 9s; }
-  .culture-particle:nth-child(15) { left: 88%; animation-duration: 16s; animation-delay: 3.5s; }
-
-  @keyframes fall {
-    0%   { transform: translateY(0) translateX(0) scale(0); opacity: 0; }
-    10%  { opacity: 1; transform: translateY(10vh) translateX(10px) scale(1); }
-    90%  { opacity: 1; }
-    100% { transform: translateY(110vh) translateX(-20px) scale(0.5); opacity: 0; }
-  }
-
-  body.culture-active {
-    background: linear-gradient(-45deg, #1a0f2e, #2d1b4e, #4a2c5e, #6b3d5c, #8b4a6b) !important;
-    background-size: 400% 400% !important;
-    animation: gradientShift 18s ease infinite;
-  }
-  @keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
 </style>
 </head>
 <body>
@@ -720,81 +282,33 @@
   <div class="link" onclick="showPage('loginPage')">بازگشت</div>
 </div>
 
-<!-- ============ صفحه فرهنگ و هنر ============ -->
-<div class="container user-panel hidden" id="culturePage" style="background:transparent;box-shadow:none;padding:0;">
-  <div class="culture-bg-effects" aria-hidden="true"></div>
-  <div class="culture-glow-orbs" aria-hidden="true">
-    <div class="culture-orb"></div>
-    <div class="culture-orb"></div>
-    <div class="culture-orb"></div>
-  </div>
-  <div class="culture-particles" aria-hidden="true">
-    <div class="culture-particle"></div>
-    <div class="culture-particle"></div>
-    <div class="culture-particle"></div>
-    <div class="culture-particle"></div>
-    <div class="culture-particle"></div>
-    <div class="culture-particle"></div>
-    <div class="culture-particle"></div>
-    <div class="culture-particle"></div>
-    <div class="culture-particle"></div>
-    <div class="culture-particle"></div>
-    <div class="culture-particle"></div>
-    <div class="culture-particle"></div>
-    <div class="culture-particle"></div>
-    <div class="culture-particle"></div>
-    <div class="culture-particle"></div>
+<!-- ============ صفحه چرخه نیتروژن (پنل کاربر) ============ -->
+<div class="container user-panel hidden" id="cyclePage">
+  <div class="header">
+    <h2>🌍 چرخه نیتروژن</h2>
+    <button class="btn btn-red btn-sm" onclick="logout()">خروج</button>
   </div>
 
-  <div class="culture-page-container">
-    <div class="header" style="background:rgba(255,255,255,0.08);backdrop-filter:blur(10px);border-radius:15px;padding:12px 18px;margin-bottom:20px;border:1px solid rgba(255,220,200,0.25);">
-      <h2 style="color:#fff8f0;margin:0;font-size:18px;">🎭 فرهنگ و هنر</h2>
-      <div style="display:flex; gap:8px; align-items:center;">
-        <span id="userBadge" style="color:#ffe8d8;font-size:13px;background:rgba(255,180,220,0.15);padding:5px 12px;border-radius:20px;"></span>
-        <button class="btn btn-red btn-sm" onclick="logout()">خروج</button>
-      </div>
+  <div class="cycle-wrapper">
+    <p class="subtitle">روی اجزای صحنه کلیک کنید تا متن کتاب را ببینید</p>
+
+    <div class="canvas-container">
+      <canvas id="scene"></canvas>
     </div>
 
-    <div class="culture-card">
-      <h1 class="culture-title">
-        <span>🎭</span> فرهنگ و هنر <span>🖌️</span>
-      </h1>
+    <div class="cycle-ui-panel" id="info-panel">
+      <h2 id="info-title">راهنما</h2>
+      <p id="info-text">روی دکمه «شروع چرخه» کلیک کنید تا ذرات نیتروژن شروع به حرکت کنند. همچنین می‌توانید روی بخش‌های مختلف صحنه (ابر، خاک، گیاه، گوسفند، باکتری) کلیک کنید تا متن دقیق کتاب درسی برایتان نمایش داده شود.</p>
+    </div>
 
-      <div class="culture-grid">
-        <div class="culture-concept culture">
-          <div class="culture-icon">🌍</div>
-          <h2>فرهنگ <small>چیست؟</small></h2>
-          <div class="culture-highlight">
-            <p>
-              <strong>تعریف ساده:</strong>
-              نرم‌افزار زندگی و سبک رفتار، ارزش‌ها، باورها و آداب‌ورسوم یک ملت است.
-            </p>
-          </div>
-          <ul class="culture-features">
-            <li>از نسلی به نسل دیگر منتقل می‌شود.</li>
-            <li>راهکار جامعه برای حل نیازهاست.</li>
-          </ul>
-        </div>
+    <div class="cycle-controls">
+      <button id="play-btn" onclick="startAnimation()">▶ شروع چرخه</button>
+      <button onclick="resetScene()">🔄 ریست</button>
+    </div>
 
-        <div class="culture-concept art">
-          <div class="culture-icon">🎨</div>
-          <h2>هنر <small>چیست؟</small></h2>
-          <div class="culture-highlight">
-            <p>
-              <strong>تعریف ساده:</strong>
-              بیان خلاقانه احساسات، تخیل و تجربه‌های انسان از طریق ابزارهایی مانند نقاشی، موسیقی، سینما و ادبیات است.
-            </p>
-          </div>
-          <ul class="culture-features">
-            <li>هنر مهم‌ترین و زنده‌ترین بخش فرهنگ به شمار می‌رود.</li>
-            <li>عواطف و معنا را منتقل می‌کند.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="culture-quote">
-        <span>«</span> فرهنگ روح یک ملت است و هنر، صدای زنده‌ی آن <span>»</span>
-      </div>
+    <div class="cycle-legend">
+      <div class="legend-item"><div class="dot" style="background:#60a5fa;"></div> نیتروژن (N)</div>
+      <div class="legend-item"><div class="dot" style="background:#fbbf24;"></div> باکتری</div>
     </div>
   </div>
 </div>
@@ -848,11 +362,6 @@
       <div style="font-size:12px;color:#666;margin-top:4px;">PBKDF2 (۱۰۰,۰۰۰ تکرار)</div></div>
       <span class="type unlimited">امن</span>
     </div>
-    <div class="item" style="border-left-color:#27ae60;">
-      <div><div style="font-weight:bold;color:#1e3c72;">🎭 صفحه فرهنگ و هنر</div>
-      <div style="font-size:12px;color:#666;margin-top:4px;">صفحه‌ی اصلی پس از ورود کاربران</div></div>
-      <span class="type unlimited">فعال</span>
-    </div>
     <div class="section-title">تغییر رمز ادمین</div>
     <div class="input-group"><label>رمز فعلی</label>
       <input type="password" id="oldAdminPass"></div>
@@ -867,7 +376,7 @@
 
 <!-- ============ فوتر سازنده ============ -->
 <footer class="creator-footer">
-  <span class="label">✨ طراحی و توسعه</span>
+  <span class="label">✨ طراحی و توسعه توسط</span>
   <span class="name">ایلیا خداپناه</span>
   <span class="label">💻</span>
 </footer>
@@ -1237,19 +746,13 @@ function setMsg(id, text, type) {
   el.className = 'msg ' + (type || '');
 }
 function showPage(id) {
-  ['loadingPage','loginPage','registerPage','culturePage','adminPage',
+  ['loadingPage','loginPage','registerPage','cyclePage','adminPage',
    'adminStep1Page','adminStep2Page','setupPage']
     .forEach(p => {
       const el = document.getElementById(p);
       if (el) el.classList.add('hidden');
     });
   document.getElementById(id).classList.remove('hidden');
-
-  if (id === 'culturePage') {
-    document.body.classList.add('culture-active');
-  } else {
-    document.body.classList.remove('culture-active');
-  }
 }
 
 /* ==================== شروع ==================== */
@@ -1374,12 +877,7 @@ async function doLogin() {
     CURRENT_USERNAME = username;
     setMsg('loginMsg', '', '');
     document.getElementById('loginPassword').value = '';
-
-    const badge = document.getElementById('userBadge');
-    if (badge) badge.textContent = '👤 ' + username;
-
-    showPage('culturePage');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    enterCyclePage();
   } catch (e) {
     setMsg('loginMsg', '❌ خطا', 'error');
   }
@@ -1628,6 +1126,10 @@ function logout() {
   CURRENT_APP_KEY = null;
   CURRENT_DATA = null;
   CURRENT_USERNAME = null;
+  isPlaying = false;
+  const btn = document.getElementById('play-btn');
+  if (btn) btn.disabled = false;
+  particles = [];
 
   ['loginUsername','loginPassword','adminPasswordInput','masterPasswordInput'].forEach(id => {
     const el = document.getElementById(id);
@@ -1638,6 +1140,323 @@ function logout() {
   setMsg('adminStep2Msg', '', '');
   showPage('loginPage');
 }
+
+/* ============================================================
+   🌍 چرخه نیتروژن
+   ============================================================ */
+const cycleCanvas = document.getElementById('scene');
+const cycleCtx = cycleCanvas.getContext('2d');
+
+let cWidth, cHeight, scaleFactor;
+let positions = {};
+
+function resizeCycleCanvas() {
+    const cyclePage = document.getElementById('cyclePage');
+    if (!cyclePage || cyclePage.classList.contains('hidden')) return;
+    const container = cycleCanvas.parentElement;
+    const rect = container.getBoundingClientRect();
+    if (rect.width === 0) return;
+    const dpr = window.devicePixelRatio || 1;
+
+    cycleCanvas.width = rect.width * dpr;
+    cycleCanvas.height = rect.height * dpr;
+
+    cycleCtx.setTransform(1, 0, 0, 1, 0, 0);
+    cycleCtx.scale(dpr, dpr);
+
+    cWidth = rect.width;
+    cHeight = rect.height;
+    scaleFactor = cWidth / 800;
+
+    updatePositions();
+}
+
+function updatePositions() {
+    positions = {
+        cloud:    { x: cWidth * 0.5,  y: cHeight * 0.15 },
+        soil:     { x: cWidth * 0.5,  y: cHeight * 0.7  },
+        plant:    { x: cWidth * 0.75, y: cHeight * 0.7  },
+        animal:   { x: cWidth * 0.5,  y: cHeight * 0.5  },
+        bacteria: { x: cWidth * 0.25, y: cHeight * 0.75 }
+    };
+}
+
+const infoData = {
+    lightning: { title:"⚡ رعد و برق", text:"مقداری نیتروژن در اثر رعد و برق صاعقه به اسید نیتریک تبدیل می‌شود که در خاک به نیترات تبدیل شده و وارد چرخه می‌شود." },
+    soil: { title:"🟫 خاک و چرخه کلی", text:"نیتروژن هوا توسط گیاهان جذب می‌شود و به مواد آلی نیتروژن‌دار (پروتئین‌ها) تبدیل می‌گردد. این مواد آلی دارای نیتروژن گیاهی توسط گیاهخواران جذب شده و سپس با مرگ گیاهان و گیاهخواران و تجزیه شدن آن‌ها در طول زمان توسط باکتری‌های خاک به آمونیاک تبدیل می‌شود. این آمونیاک توسط باکتری‌ها یا به نیترات در خاک تبدیل می‌شود که مجدداً توسط گیاهان مورد استفاده قرار می‌گیرد، یا به نیتروژن تبدیل می‌شود و به هوا باز می‌گردد. مقداری نیتروژن در اثر رعد و برق صاعقه به اسید نیتریک تبدیل می‌شود که در خاک به نیترات تبدیل شده و وارد چرخه می‌شود." },
+    plant: { title:"🌿 گیاهان", text:"نیتروژن هوا توسط گیاهان جذب می‌شود و به مواد آلی نیتروژن‌دار (پروتئین‌ها) تبدیل می‌گردد." },
+    animal: { title:"🐑 گیاهخواران", text:"این مواد آلی دارای نیتروژن گیاهی توسط گیاهخواران جذب شده و سپس با مرگ گیاهان و گیاهخواران و تجزیه شدن آن‌ها در طول زمان توسط باکتری‌های خاک به آمونیاک تبدیل می‌شود." },
+    bacteria: { title:"🦠 باکتری‌های خاک", text:"با مرگ گیاهان و گیاهخواران و تجزیه شدن آن‌ها در طول زمان توسط باکتری‌های خاک به آمونیاک تبدیل می‌شود. این آمونیاک توسط باکتری‌ها یا به نیترات در خاک تبدیل می‌شود که مجدداً توسط گیاهان مورد استفاده قرار می‌گیرد، یا به نیتروژن تبدیل می‌شود و به هوا باز می‌گردد." }
+};
+
+let isPlaying = false;
+let cycleAnimId = null;
+let particles = [];
+let frame = 0;
+
+class Particle {
+    constructor() { this.reset(); }
+    reset() {
+        this.x=0; this.y=0; this.targetX=0; this.targetY=0;
+        this.speed = 0.02 + Math.random() * 0.02;
+        this.stage = 0;
+        this.visible = false;
+        this.size = 3 + Math.random() * 3;
+        this.alpha = 1;
+    }
+    update() {
+        if (!this.visible) return;
+        this.x += (this.targetX - this.x) * this.speed;
+        this.y += (this.targetY - this.y) * this.speed;
+        const dist = Math.sqrt((this.x-this.targetX)**2 + (this.y-this.targetY)**2);
+        if (dist < 5) {
+            this.stage++;
+            if (this.stage > 5) this.stage = 0;
+            this.setTarget();
+        }
+    }
+    setTarget() {
+        switch(this.stage) {
+            case 0:
+                this.x = positions.cloud.x + (Math.random()-0.5)*80*scaleFactor;
+                this.y = positions.cloud.y + (Math.random()-0.5)*30*scaleFactor;
+                this.targetX = positions.soil.x + (Math.random()-0.5)*50*scaleFactor;
+                this.targetY = positions.soil.y - 20*scaleFactor;
+                this.visible = true;
+                break;
+            case 1:
+                this.targetX = positions.plant.x - 40*scaleFactor;
+                this.targetY = positions.plant.y - 20*scaleFactor;
+                break;
+            case 2:
+                this.targetX = positions.animal.x - 20*scaleFactor;
+                this.targetY = positions.animal.y;
+                break;
+            case 3:
+                this.targetX = positions.bacteria.x + 20*scaleFactor;
+                this.targetY = positions.bacteria.y;
+                break;
+            case 4:
+                this.targetX = positions.soil.x + (Math.random()-0.5)*50*scaleFactor;
+                this.targetY = positions.soil.y;
+                break;
+            case 5:
+                this.targetX = positions.cloud.x + (Math.random()-0.5)*80*scaleFactor;
+                this.targetY = positions.cloud.y;
+                break;
+        }
+    }
+    draw() {
+        if (!this.visible) return;
+        const s = this.size * scaleFactor;
+        cycleCtx.beginPath();
+        cycleCtx.arc(this.x, this.y, s, 0, Math.PI*2);
+        cycleCtx.fillStyle = '#60a5fa';
+        cycleCtx.globalAlpha = this.alpha;
+        cycleCtx.fill();
+        cycleCtx.globalAlpha = 1;
+        cycleCtx.beginPath();
+        cycleCtx.arc(this.x, this.y, s*2, 0, Math.PI*2);
+        cycleCtx.fillStyle = 'rgba(96, 165, 250, 0.2)';
+        cycleCtx.fill();
+    }
+}
+
+function drawBackground() {
+    const skyGradient = cycleCtx.createLinearGradient(0, 0, 0, cHeight);
+    skyGradient.addColorStop(0, '#0f172a');
+    skyGradient.addColorStop(0.6, '#1e293b');
+    skyGradient.addColorStop(1, '#334155');
+    cycleCtx.fillStyle = skyGradient;
+    cycleCtx.fillRect(0, 0, cWidth, cHeight);
+
+    cycleCtx.beginPath();
+    cycleCtx.arc(cWidth*0.15, cHeight*0.15, 30*scaleFactor, 0, Math.PI*2);
+    cycleCtx.fillStyle = 'rgba(250, 204, 21, 0.8)';
+    cycleCtx.shadowColor = '#facc15';
+    cycleCtx.shadowBlur = 30*scaleFactor;
+    cycleCtx.fill();
+    cycleCtx.shadowBlur = 0;
+
+    const cx = positions.cloud.x, cy = positions.cloud.y, cs = 40*scaleFactor;
+    cycleCtx.fillStyle = '#64748b';
+    cycleCtx.beginPath();
+    cycleCtx.arc(cx, cy, cs, 0, Math.PI*2);
+    cycleCtx.arc(cx-cs, cy+cs*0.25, cs*0.75, 0, Math.PI*2);
+    cycleCtx.arc(cx+cs, cy+cs*0.25, cs*0.85, 0, Math.PI*2);
+    cycleCtx.fill();
+
+    if (isPlaying && frame % 100 < 10) {
+        cycleCtx.strokeStyle = '#facc15';
+        cycleCtx.lineWidth = 3*scaleFactor;
+        cycleCtx.beginPath();
+        cycleCtx.moveTo(cx, cy+cs*0.5);
+        cycleCtx.lineTo(cx-20*scaleFactor, cy+cs*1.5);
+        cycleCtx.lineTo(cx+10*scaleFactor, cy+cs*1.75);
+        cycleCtx.lineTo(cx-10*scaleFactor, cy+cs*3);
+        cycleCtx.stroke();
+    }
+
+    const soilY = cHeight * 0.75;
+    const soilGradient = cycleCtx.createLinearGradient(0, soilY, 0, cHeight);
+    soilGradient.addColorStop(0, '#78350f');
+    soilGradient.addColorStop(1, '#451a03');
+    cycleCtx.fillStyle = soilGradient;
+    cycleCtx.beginPath();
+    cycleCtx.moveTo(0, soilY);
+    cycleCtx.quadraticCurveTo(cWidth/2, soilY-20*scaleFactor, cWidth, soilY);
+    cycleCtx.lineTo(cWidth, cHeight);
+    cycleCtx.lineTo(0, cHeight);
+    cycleCtx.fill();
+
+    cycleCtx.fillStyle = '#22c55e';
+    const grassSpacing = 20*scaleFactor;
+    for(let i=0; i<cWidth; i+=grassSpacing) {
+        let h = (10 + Math.sin(i)*5)*scaleFactor;
+        cycleCtx.fillRect(i, soilY-5*scaleFactor + Math.sin(i)*5*scaleFactor, 3*scaleFactor, h);
+    }
+}
+
+function drawPlant() {
+    const px = positions.plant.x, py = positions.plant.y, s = scaleFactor;
+    cycleCtx.strokeStyle = '#4ade80';
+    cycleCtx.lineWidth = 6*s;
+    cycleCtx.beginPath();
+    cycleCtx.moveTo(px, py+40*s);
+    cycleCtx.quadraticCurveTo(px-10*s, py, px, py-40*s);
+    cycleCtx.stroke();
+    cycleCtx.fillStyle = '#22c55e';
+    cycleCtx.beginPath(); cycleCtx.ellipse(px-15*s, py-10*s, 15*s, 8*s, -0.5, 0, Math.PI*2); cycleCtx.fill();
+    cycleCtx.beginPath(); cycleCtx.ellipse(px+15*s, py-25*s, 15*s, 8*s, 0.5, 0, Math.PI*2); cycleCtx.fill();
+    cycleCtx.beginPath(); cycleCtx.ellipse(px-10*s, py-40*s, 12*s, 6*s, -0.8, 0, Math.PI*2); cycleCtx.fill();
+}
+
+function drawAnimal() {
+    const ax = positions.animal.x, ay = positions.animal.y, s = scaleFactor;
+    cycleCtx.fillStyle = '#f1f5f9';
+    cycleCtx.beginPath(); cycleCtx.ellipse(ax, ay, 35*s, 25*s, 0, 0, Math.PI*2); cycleCtx.fill();
+    cycleCtx.beginPath(); cycleCtx.arc(ax+30*s, ay-15*s, 15*s, 0, Math.PI*2); cycleCtx.fill();
+    cycleCtx.fillStyle = '#334155';
+    cycleCtx.fillRect(ax-20*s, ay+15*s, 6*s, 20*s);
+    cycleCtx.fillRect(ax+10*s, ay+15*s, 6*s, 20*s);
+    cycleCtx.fillStyle = '#000';
+    cycleCtx.beginPath(); cycleCtx.arc(ax+35*s, ay-18*s, 2*s, 0, Math.PI*2); cycleCtx.fill();
+}
+
+function drawBacteria() {
+    const bx = positions.bacteria.x, by = positions.bacteria.y, s = scaleFactor;
+    for(let i=0; i<5; i++) {
+        let offsetX = Math.sin(frame*0.05 + i)*15*s;
+        let offsetY = Math.cos(frame*0.05 + i)*10*s;
+        cycleCtx.beginPath();
+        cycleCtx.arc(bx+offsetX, by+offsetY, 5*s, 0, Math.PI*2);
+        cycleCtx.fillStyle = '#fbbf24';
+        cycleCtx.shadowColor = '#fbbf24';
+        cycleCtx.shadowBlur = 10*s;
+        cycleCtx.fill();
+        cycleCtx.shadowBlur = 0;
+    }
+}
+
+function drawConnections() {
+    const s = scaleFactor;
+    cycleCtx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+    cycleCtx.lineWidth = 2*s;
+    cycleCtx.setLineDash([5*s, 5*s]);
+
+    cycleCtx.beginPath(); cycleCtx.moveTo(positions.cloud.x, positions.cloud.y+40*s); cycleCtx.lineTo(positions.soil.x, positions.soil.y-20*s); cycleCtx.stroke();
+    cycleCtx.beginPath(); cycleCtx.moveTo(positions.soil.x+50*s, positions.soil.y); cycleCtx.lineTo(positions.plant.x-50*s, positions.plant.y); cycleCtx.stroke();
+    cycleCtx.beginPath(); cycleCtx.moveTo(positions.plant.x, positions.plant.y-40*s); cycleCtx.lineTo(positions.animal.x+20*s, positions.animal.y+10*s); cycleCtx.stroke();
+    cycleCtx.beginPath(); cycleCtx.moveTo(positions.animal.x-30*s, positions.animal.y+20*s); cycleCtx.lineTo(positions.bacteria.x+20*s, positions.bacteria.y); cycleCtx.stroke();
+    cycleCtx.beginPath(); cycleCtx.moveTo(positions.bacteria.x, positions.bacteria.y-20*s); cycleCtx.lineTo(positions.soil.x-30*s, positions.soil.y); cycleCtx.stroke();
+
+    cycleCtx.setLineDash([]);
+}
+
+function animateCycle() {
+    const cyclePage = document.getElementById('cyclePage');
+    if (!cyclePage || cyclePage.classList.contains('hidden')) {
+        cycleAnimId = null;
+        return;
+    }
+    frame++;
+    cycleCtx.clearRect(0, 0, cWidth, cHeight);
+    drawBackground();
+    drawConnections();
+    drawPlant();
+    drawAnimal();
+    drawBacteria();
+    particles.forEach(p => { p.update(); p.draw(); });
+    if (!isPlaying) {
+        particles.forEach(p => {
+            p.alpha -= 0.05;
+            if (p.alpha <= 0) p.visible = false;
+        });
+    }
+    cycleAnimId = requestAnimationFrame(animateCycle);
+}
+
+function startAnimation() {
+    if (isPlaying) return;
+    isPlaying = true;
+    document.getElementById('play-btn').disabled = true;
+    particles = [];
+    for (let i = 0; i < 20; i++) {
+        let p = new Particle();
+        p.stage = Math.floor(Math.random() * 6);
+        p.x = positions.cloud.x;
+        p.y = positions.cloud.y;
+        p.setTarget();
+        p.alpha = 1;
+        particles.push(p);
+    }
+    updateCycleInfo('soil');
+}
+
+function resetScene() {
+    isPlaying = false;
+    document.getElementById('play-btn').disabled = false;
+    particles = [];
+    document.getElementById('info-title').innerText = "راهنما";
+    document.getElementById('info-text').innerText = "روی دکمه «شروع چرخه» کلیک کنید تا ذرات نیتروژن شروع به حرکت کنند. همچنین می‌توانید روی بخش‌های مختلف صحنه کلیک کنید.";
+}
+
+function updateCycleInfo(key) {
+    const data = infoData[key];
+    if (data) {
+        document.getElementById('info-title').innerText = data.title;
+        document.getElementById('info-text').innerText = data.text;
+    }
+}
+
+cycleCanvas.addEventListener('click', (e) => {
+    const rect = cycleCanvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const s = scaleFactor;
+    const dist = (x1,y1,x2,y2) => Math.sqrt((x1-x2)**2 + (y1-y2)**2);
+
+    if (dist(mouseX, mouseY, positions.cloud.x, positions.cloud.y) < 60*s) updateCycleInfo('lightning');
+    else if (dist(mouseX, mouseY, positions.soil.x, positions.soil.y) < 60*s) updateCycleInfo('soil');
+    else if (dist(mouseX, mouseY, positions.plant.x, positions.plant.y) < 50*s) updateCycleInfo('plant');
+    else if (dist(mouseX, mouseY, positions.animal.x, positions.animal.y) < 50*s) updateCycleInfo('animal');
+    else if (dist(mouseX, mouseY, positions.bacteria.x, positions.bacteria.y) < 50*s) updateCycleInfo('bacteria');
+});
+
+function enterCyclePage() {
+    showPage('cyclePage');
+    setTimeout(() => {
+        resizeCycleCanvas();
+        if (!cycleAnimId) animateCycle();
+    }, 60);
+}
+
+window.addEventListener('resize', () => {
+    const cyclePage = document.getElementById('cyclePage');
+    if (cyclePage && !cyclePage.classList.contains('hidden')) {
+        resizeCycleCanvas();
+    }
+});
 
 /* ==================== شروع ==================== */
 init();
