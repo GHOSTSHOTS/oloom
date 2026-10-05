@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>سیستم لاگین امن + چرخه نیتروژن</title>
+<title>چرخه نیتروژن و پلیمرها</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:Tahoma,sans-serif; -webkit-tap-highlight-color:transparent; }
   body { min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
@@ -87,6 +87,25 @@
                 padding:3px 10px; border-radius:20px; font-size:11px; margin-bottom:10px; }
   .loading { text-align:center; color:#2a5298; font-size:13px; padding:20px; }
 
+  /* ==================== نوار تب کاربر ==================== */
+  .user-nav {
+    display: flex; gap: 8px; margin-bottom: 20px;
+    background: #f3f4f6; padding: 6px; border-radius: 12px;
+    flex-wrap: wrap;
+  }
+  .user-nav button {
+    flex: 1; min-width: 140px; padding: 10px 16px;
+    background: transparent; border: none; border-radius: 8px;
+    font-size: 14px; font-weight: bold; cursor: pointer;
+    color: #4b5563; transition: 0.2s;
+    font-family: inherit;
+  }
+  .user-nav button:hover { background: #e5e7eb; }
+  .user-nav button.active {
+    background: linear-gradient(135deg,#1e3c72,#2a5298);
+    color: #fff; box-shadow: 0 4px 12px rgba(30,60,114,0.3);
+  }
+
   /* ==================== چرخه نیتروژن ==================== */
   .cycle-wrapper { display:flex; flex-direction:column; width:100%; gap:15px; }
   .cycle-wrapper .subtitle {
@@ -128,10 +147,85 @@
   .cycle-legend .legend-item { display: flex; align-items: center; gap: 5px; }
   .cycle-legend .dot { width: 10px; height: 10px; border-radius: 50%; }
 
+  /* ==================== صفحه پلیمرها ==================== */
+  .polymer-wrapper { display: flex; flex-direction: column; gap: 18px; }
+
+  .polymer-card {
+    background: #f7f9fc; border-radius: 14px; padding: 18px 20px;
+    border-right: 6px solid #2a5298; transition: 0.25s;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  }
+  .polymer-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+
+  .polymer-card.pet { border-right-color: #3498db; }
+  .polymer-card.hdpe { border-right-color: #e74c3c; }
+  .polymer-card.pvc { border-right-color: #f39c12; }
+  .polymer-card.ldpe { border-right-color: #e91e63; }
+  .polymer-card.pp { border-right-color: #9b59b6; }
+  .polymer-card.ps { border-right-color: #16a085; }
+  .polymer-card.other { border-right-color: #7f8c8d; }
+
+  .polymer-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 12px; flex-wrap: wrap;
+  }
+  .polymer-num {
+    width: 42px; height: 42px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: bold; color: #fff;
+    flex-shrink: 0;
+  }
+  .polymer-card.pet .polymer-num { background: #3498db; }
+  .polymer-card.hdpe .polymer-num { background: #e74c3c; }
+  .polymer-card.pvc .polymer-num { background: #f39c12; }
+  .polymer-card.ldpe .polymer-num { background: #e91e63; }
+  .polymer-card.pp .polymer-num { background: #9b59b6; }
+  .polymer-card.ps .polymer-num { background: #16a085; }
+  .polymer-card.other .polymer-num { background: #7f8c8d; }
+
+  .polymer-title {
+    font-size: 17px; font-weight: bold; color: #1e3c72;
+  }
+  .polymer-code {
+    font-family: monospace; font-size: 13px; color: #666;
+    margin-top: 2px;
+  }
+
+  .polymer-section {
+    margin-top: 10px; padding-right: 8px;
+    border-right: 3px solid #e5e7eb;
+  }
+  .polymer-section-title {
+    font-size: 13px; font-weight: bold; color: #2a5298;
+    margin-bottom: 4px;
+  }
+  .polymer-section-text {
+    font-size: 13.5px; color: #4b5563; line-height: 1.9;
+    text-align: justify;
+  }
+
   @media (max-width: 480px) {
     .header h2 { font-size: 16px; }
     .cycle-ui-panel p { font-size: 0.82rem; line-height: 1.7; }
+    .polymer-card { padding: 14px 15px; }
+    .polymer-title { font-size: 15px; }
+    .polymer-section-text { font-size: 12.5px; }
+    .user-nav button { font-size: 12px; padding: 8px 10px; min-width: 100px; }
   }
+
+  /* ==================== هشدار DevTools ==================== */
+  .devtools-warning {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15, 32, 39, 0.98); color: #fff; z-index: 99999;
+    justify-content: center; align-items: center; text-align: center;
+    padding: 30px; font-size: 18px; line-height: 2;
+  }
+  .devtools-warning.show { display: flex; flex-direction: column; }
+  .devtools-warning h2 { color: #e74c3c; margin-bottom: 20px; font-size: 24px; }
 
   /* ==================== فوتر سازنده ==================== */
   .creator-footer {
@@ -172,16 +266,18 @@
     50% { filter: drop-shadow(0 0 12px rgba(167, 139, 250, 0.9)); }
   }
 
-  /* ==================== هشدار DevTools ==================== */
-  .devtools-warning {
-    display: none;
-    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(15, 32, 39, 0.98); color: #fff; z-index: 99999;
-    justify-content: center; align-items: center; text-align: center;
-    padding: 30px; font-size: 18px; line-height: 2;
+  @media (max-width: 768px), (hover: none) and (pointer: coarse) {
+    .creator-footer {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      background: #0f2027 !important;
+    }
+    .creator-footer .name {
+      animation: none !important;
+      filter: none !important;
+      -webkit-filter: none !important;
+    }
   }
-  .devtools-warning.show { display: flex; flex-direction: column; }
-  .devtools-warning h2 { color: #e74c3c; margin-bottom: 20px; font-size: 24px; }
 </style>
 </head>
 <body>
@@ -282,33 +378,175 @@
   <div class="link" onclick="showPage('loginPage')">بازگشت</div>
 </div>
 
-<!-- ============ صفحه چرخه نیتروژن (پنل کاربر) ============ -->
-<div class="container user-panel hidden" id="cyclePage">
+<!-- ============ صفحه اصلی کاربر (تب‌دار) ============ -->
+<div class="container user-panel hidden" id="userPage">
   <div class="header">
-    <h2>🌍 چرخه نیتروژن</h2>
+    <h2>👤 پنل کاربر</h2>
     <button class="btn btn-red btn-sm" onclick="logout()">خروج</button>
   </div>
 
-  <div class="cycle-wrapper">
-    <p class="subtitle">روی اجزای صحنه کلیک کنید تا متن کتاب را ببینید</p>
+  <!-- نوار تب -->
+  <div class="user-nav">
+    <button class="active" data-tab="cycle" onclick="switchUserTab('cycle')">🌍 چرخه نیتروژن</button>
+    <button data-tab="polymer" onclick="switchUserTab('polymer')">♻️ پلیمرها</button>
+  </div>
 
-    <div class="canvas-container">
-      <canvas id="scene"></canvas>
+  <!-- ============ تب چرخه نیتروژن ============ -->
+  <div id="tab-cycle">
+    <div class="cycle-wrapper">
+      <p class="subtitle">روی اجزای صحنه کلیک کنید تا متن کتاب را ببینید</p>
+
+      <div class="canvas-container">
+        <canvas id="scene"></canvas>
+      </div>
+
+      <div class="cycle-ui-panel" id="info-panel">
+        <h2 id="info-title">راهنما</h2>
+        <p id="info-text">روی دکمه «شروع چرخه» کلیک کنید تا ذرات نیتروژن شروع به حرکت کنند. همچنین می‌توانید روی بخش‌های مختلف صحنه (ابر، خاک، گیاه، گوسفند، باکتری) کلیک کنید تا متن دقیق کتاب درسی برایتان نمایش داده شود.</p>
+      </div>
+
+      <div class="cycle-controls">
+        <button id="play-btn" onclick="startAnimation()">▶ شروع چرخه</button>
+        <button onclick="resetScene()">🔄 ریست</button>
+      </div>
+
+      <div class="cycle-legend">
+        <div class="legend-item"><div class="dot" style="background:#60a5fa;"></div> نیتروژن (N)</div>
+        <div class="legend-item"><div class="dot" style="background:#fbbf24;"></div> باکتری</div>
+      </div>
     </div>
+  </div>
 
-    <div class="cycle-ui-panel" id="info-panel">
-      <h2 id="info-title">راهنما</h2>
-      <p id="info-text">روی دکمه «شروع چرخه» کلیک کنید تا ذرات نیتروژن شروع به حرکت کنند. همچنین می‌توانید روی بخش‌های مختلف صحنه (ابر، خاک، گیاه، گوسفند، باکتری) کلیک کنید تا متن دقیق کتاب درسی برایتان نمایش داده شود.</p>
-    </div>
+  <!-- ============ تب پلیمرها ============ -->
+  <div id="tab-polymer" class="hidden">
+    <div class="polymer-wrapper">
 
-    <div class="cycle-controls">
-      <button id="play-btn" onclick="startAnimation()">▶ شروع چرخه</button>
-      <button onclick="resetScene()">🔄 ریست</button>
-    </div>
+      <div class="polymer-card pet">
+        <div class="polymer-header">
+          <div class="polymer-num">۱</div>
+          <div>
+            <div class="polymer-title">پلی‌اتیلن ترفتالات (PET)</div>
+            <div class="polymer-code">Polyethylene Terephthalate</div>
+          </div>
+        </div>
+        <div class="polymer-section">
+          <div class="polymer-section-title">ویژگی‌ها</div>
+          <div class="polymer-section-text">شفاف، محکم و جلوگیری‌کننده از نفوذ گازها</div>
+        </div>
+        <div class="polymer-section">
+          <div class="polymer-section-title">کاربرد</div>
+          <div class="polymer-section-text">بطری‌های آب معدنی، نوشابه و ظروف حاوی نوشیدنی</div>
+        </div>
+      </div>
 
-    <div class="cycle-legend">
-      <div class="legend-item"><div class="dot" style="background:#60a5fa;"></div> نیتروژن (N)</div>
-      <div class="legend-item"><div class="dot" style="background:#fbbf24;"></div> باکتری</div>
+      <div class="polymer-card hdpe">
+        <div class="polymer-header">
+          <div class="polymer-num">۲</div>
+          <div>
+            <div class="polymer-title">پلی‌اتیلن با چگالی بالا (HDPE)</div>
+            <div class="polymer-code">High-Density Polyethylene</div>
+          </div>
+        </div>
+        <div class="polymer-section">
+          <div class="polymer-section-title">ویژگی‌ها</div>
+          <div class="polymer-section-text">سخت، مقاومت و مقاومت بالا در برابر ضربه و شیمیایی</div>
+        </div>
+        <div class="polymer-section">
+          <div class="polymer-section-title">کاربرد</div>
+          <div class="polymer-section-text">بطری‌های شیر، ظروف مواد شوینده، شامپو و لوله‌های پلاستیکی</div>
+        </div>
+      </div>
+
+      <div class="polymer-card pvc">
+        <div class="polymer-header">
+          <div class="polymer-num">۳</div>
+          <div>
+            <div class="polymer-title">پلی‌وینیل کلراید (PVC)</div>
+            <div class="polymer-code">Polyvinyl Chloride</div>
+          </div>
+        </div>
+        <div class="polymer-section">
+          <div class="polymer-section-title">ویژگی‌ها</div>
+          <div class="polymer-section-text">بسیار محکم، محکم و مقاوم در برابر شرایط آب و هوایی (از نظر نفوذ آب)</div>
+        </div>
+        <div class="polymer-section">
+          <div class="polymer-section-title">کاربرد</div>
+          <div class="polymer-section-text">لوله‌های آب و فاضلاب، روکش سیم‌ها و کابل‌های برق، شلنگ‌ها</div>
+        </div>
+      </div>
+
+      <div class="polymer-card ldpe">
+        <div class="polymer-header">
+          <div class="polymer-num">۴</div>
+          <div>
+            <div class="polymer-title">پلی‌اتیلن با چگالی پایین (LDPE)</div>
+            <div class="polymer-code">Low-Density Polyethylene</div>
+          </div>
+        </div>
+        <div class="polymer-section">
+          <div class="polymer-section-title">ویژگی‌ها</div>
+          <div class="polymer-section-text">انعطاف‌پذیر و نرم</div>
+        </div>
+        <div class="polymer-section">
+          <div class="polymer-section-title">کاربرد</div>
+          <div class="polymer-section-text">کیسه‌های خرید، پلاستیک سفره و روکش‌های نازک بسته‌بندی</div>
+        </div>
+      </div>
+
+      <div class="polymer-card pp">
+        <div class="polymer-header">
+          <div class="polymer-num">۵</div>
+          <div>
+            <div class="polymer-title">پلی‌پروپیلن (PP)</div>
+            <div class="polymer-code">Polypropylene</div>
+          </div>
+        </div>
+        <div class="polymer-section">
+          <div class="polymer-section-title">ویژگی‌ها</div>
+          <div class="polymer-section-text">مقاومت بسیار خوب در برابر گرما و رطوبت</div>
+        </div>
+        <div class="polymer-section">
+          <div class="polymer-section-title">کاربرد</div>
+          <div class="polymer-section-text">ظروف ماست، نوشیدنی، درب بطریقه‌ها و ظروف بسته‌بندی</div>
+        </div>
+      </div>
+
+      <div class="polymer-card ps">
+        <div class="polymer-header">
+          <div class="polymer-num">۶</div>
+          <div>
+            <div class="polymer-title">پلی‌استایرن (PS)</div>
+            <div class="polymer-code">Polystyrene</div>
+          </div>
+        </div>
+        <div class="polymer-section">
+          <div class="polymer-section-title">ویژگی‌ها</div>
+          <div class="polymer-section-text">سبک، شکننده و عایق جرارت</div>
+        </div>
+        <div class="polymer-section">
+          <div class="polymer-section-title">کاربرد</div>
+          <div class="polymer-section-text">لیوان‌ها و ظروف یکبار مصرف، ضربه‌های نجات‌بخش و ظروف فومی</div>
+        </div>
+      </div>
+
+      <div class="polymer-card other">
+        <div class="polymer-header">
+          <div class="polymer-num">۷</div>
+          <div>
+            <div class="polymer-title">سایر پلاستیک‌ها (Other)</div>
+            <div class="polymer-code">Other Plastics</div>
+          </div>
+        </div>
+        <div class="polymer-section">
+          <div class="polymer-section-title">ویژگی‌ها</div>
+          <div class="polymer-section-text">پلاستیک‌های با ترکیبی یا خاص که بازیافت آن‌ها در طبیعت بسیار سخت و پیچیده است.</div>
+        </div>
+        <div class="polymer-section">
+          <div class="polymer-section-title">کاربرد</div>
+          <div class="polymer-section-text">قطعات داخلی خودرو، شیره ضدرور، عایق‌های ایمنی و لوله‌های مقاوم (CD)</div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -579,8 +817,8 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ============================================================
    ⚙️ تنظیمات JSONBin
    ============================================================ */
-const JSONBIN_BIN_ID = '6ab9d6e8ac6210605afc8ddd';
-const JSONBIN_ACCESS_KEY = '$2a$10$txJZZqUIjGHmVQg.Kn6rseZSS8a/hfJBZ6vQHdVqvnM3qxjLJWckm';
+const JSONBIN_BIN_ID = '6ab658b5ffd5d160532d9b41';
+const JSONBIN_ACCESS_KEY = '$2a$10$ZKPo3X2psjYHYCAsEEkUIOCF3puu3r5Spqde/1YJOAZCy4FmaBUbq';
 
 let CURRENT_APP_KEY = null;
 let CURRENT_DATA = null;
@@ -746,7 +984,7 @@ function setMsg(id, text, type) {
   el.className = 'msg ' + (type || '');
 }
 function showPage(id) {
-  ['loadingPage','loginPage','registerPage','cyclePage','adminPage',
+  ['loadingPage','loginPage','registerPage','userPage','adminPage',
    'adminStep1Page','adminStep2Page','setupPage']
     .forEach(p => {
       const el = document.getElementById(p);
@@ -877,7 +1115,7 @@ async function doLogin() {
     CURRENT_USERNAME = username;
     setMsg('loginMsg', '', '');
     document.getElementById('loginPassword').value = '';
-    enterCyclePage();
+    enterUserPage();
   } catch (e) {
     setMsg('loginMsg', '❌ خطا', 'error');
   }
@@ -1131,6 +1369,8 @@ function logout() {
   if (btn) btn.disabled = false;
   particles = [];
 
+  switchUserTab('cycle');
+
   ['loginUsername','loginPassword','adminPasswordInput','masterPasswordInput'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
@@ -1139,6 +1379,34 @@ function logout() {
   setMsg('adminStep1Msg', '', '');
   setMsg('adminStep2Msg', '', '');
   showPage('loginPage');
+}
+
+/* ==================== نوار تب کاربر ==================== */
+function switchUserTab(tabName) {
+  document.querySelectorAll('.user-nav button').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.querySelector(`.user-nav button[data-tab="${tabName}"]`);
+  if (activeBtn) activeBtn.classList.add('active');
+
+  ['cycle','polymer'].forEach(t => {
+    const el = document.getElementById('tab-' + t);
+    if (el) el.classList.toggle('hidden', t !== tabName);
+  });
+
+  if (tabName === 'cycle') {
+    setTimeout(() => {
+      resizeCycleCanvas();
+      if (!cycleAnimId) animateCycle();
+    }, 50);
+  } else {
+    isPlaying = false;
+    const btn = document.getElementById('play-btn');
+    if (btn) btn.disabled = false;
+  }
+}
+
+function enterUserPage() {
+  showPage('userPage');
+  switchUserTab('cycle');
 }
 
 /* ============================================================
@@ -1151,8 +1419,11 @@ let cWidth, cHeight, scaleFactor;
 let positions = {};
 
 function resizeCycleCanvas() {
-    const cyclePage = document.getElementById('cyclePage');
-    if (!cyclePage || cyclePage.classList.contains('hidden')) return;
+    const userPage = document.getElementById('userPage');
+    if (!userPage || userPage.classList.contains('hidden')) return;
+    const cycleTab = document.getElementById('tab-cycle');
+    if (!cycleTab || cycleTab.classList.contains('hidden')) return;
+
     const container = cycleCanvas.parentElement;
     const rect = container.getBoundingClientRect();
     if (rect.width === 0) return;
@@ -1374,8 +1645,10 @@ function drawConnections() {
 }
 
 function animateCycle() {
-    const cyclePage = document.getElementById('cyclePage');
-    if (!cyclePage || cyclePage.classList.contains('hidden')) {
+    const userPage = document.getElementById('userPage');
+    const cycleTab = document.getElementById('tab-cycle');
+    if (!userPage || userPage.classList.contains('hidden') ||
+        !cycleTab || cycleTab.classList.contains('hidden')) {
         cycleAnimId = null;
         return;
     }
@@ -1443,17 +1716,11 @@ cycleCanvas.addEventListener('click', (e) => {
     else if (dist(mouseX, mouseY, positions.bacteria.x, positions.bacteria.y) < 50*s) updateCycleInfo('bacteria');
 });
 
-function enterCyclePage() {
-    showPage('cyclePage');
-    setTimeout(() => {
-        resizeCycleCanvas();
-        if (!cycleAnimId) animateCycle();
-    }, 60);
-}
-
 window.addEventListener('resize', () => {
-    const cyclePage = document.getElementById('cyclePage');
-    if (cyclePage && !cyclePage.classList.contains('hidden')) {
+    const userPage = document.getElementById('userPage');
+    const cycleTab = document.getElementById('tab-cycle');
+    if (userPage && !userPage.classList.contains('hidden') &&
+        cycleTab && !cycleTab.classList.contains('hidden')) {
         resizeCycleCanvas();
     }
 });
